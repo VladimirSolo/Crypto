@@ -12,7 +12,6 @@ export const Header = () => {
   const switchNetwork = async () => {
     const chainId = "0xaa36a7";
     try {
-      // Check if the network already exists
       const currentChainId = await window.ethereum?.request({
         method: "eth_chainId",
       });
@@ -21,19 +20,11 @@ export const Header = () => {
         return;
       }
 
-      await window.ethereum?.request({
-        method: "wallet_addEthereumChain",
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
         params: [
           {
             chainId: "0xaa36a7",
-            chainName: "Sepolia Test Network",
-            rpcUrls: ["https://rpc.sepolia.dev/"],
-            blockExplorerUrls: ["https://sepolia.etherscan.io"],
-            nativeCurrency: {
-              name: "Sepolia ETH",
-              symbol: "sETH",
-              decimals: 18,
-            },
           },
         ],
       });
@@ -51,8 +42,7 @@ export const Header = () => {
     }
 
     try {
-      // TODO: not working to change to Sepolia
-      // await switchNetwork();
+      await switchNetwork();
       const chainId = await window.ethereum?.request({ method: "eth_chainId" });
       console.log("Текущая сеть:", chainId);
 
