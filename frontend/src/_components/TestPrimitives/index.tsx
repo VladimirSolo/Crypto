@@ -1,15 +1,21 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Button, Form, Input, Typography } from "antd";
-import { contract, contractWithSigner } from "../../abi/_utils";
+import { mainContract } from "@/abi/mainContract";
+import { getPrimitivesWithSigner } from "@/abi/getPrimitivesWithSigner";
 
 const { Title } = Typography;
 
 export function TestPrimitives() {
   const [smallUint, setSmallUint] = useState("");
+  const [smallUintFromContract, setSmallUintFromContract] = useState("");
 
   const handleSubmit = async () => {
     try {
-      await contractWithSigner.setSmallUint(smallUint);
+      const contractWithSigner = await getPrimitivesWithSigner();
+      if (contractWithSigner) {
+        await contractWithSigner.setSmallUint(smallUint);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -18,8 +24,8 @@ export function TestPrimitives() {
   useEffect(() => {
     const fetchSmallUint = async () => {
       try {
-        const externalSmallUint = await contract.smallUint();
-        setSmallUint(externalSmallUint);
+        const externalSmallUint = await mainContract.smallUint();
+        setSmallUintFromContract(externalSmallUint);
       } catch (error) {
         console.log(error);
       }
@@ -29,30 +35,27 @@ export function TestPrimitives() {
   }, []);
 
   return (
-    <div>
-      <Form
-        name="smallUint"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={handleSubmit}
-        autoComplete="off"
-      >
-        <Form.Item name="smallUint">
-          <Title level={3}>Small Uint: {smallUint.toString()}</Title>
-          <Input
-            min={0}
-            max={256}
-            onChange={(event) => setSmallUint(event.target.value)}
-            value={smallUint}
-          />
-        </Form.Item>
+    <Form
+      name="smallUint"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      style={{ maxWidth: 600 }}
+      initialValues={{ remember: true }}
+      onFinish={handleSubmit}
+      autoComplete="off"
+    >
+      <Title level={3}>Small Uint: {smallUintFromContract.toString()}</Title>
+      <Form.Item name="smallUint">
+        <Input
+          min={0}
+          max={2}
+          onChange={(event) => setSmallUint(event.target.value)}
+        />
+      </Form.Item>
 
-        <Button type="primary" htmlType="submit">
-          Отправить новое значение
-        </Button>
-      </Form>
-    </div>
+      <Button type="primary" htmlType="submit">
+        Send
+      </Button>
+    </Form>
   );
 }
