@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Header } from "@/_components/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "@rainbow-me/rainbowkit/styles.css";
+import { Providers } from "@/providers/providers";
+import { MainLayout } from "@/layouts/MainLayout";
 
 export const metadata: Metadata = {
   title: "Cryto",
@@ -25,12 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <div className="flex flex-col min-h-screen container mx-auto">
-          <Header />
-          {children}
+          <Providers>
+            {" "}
+            <MainLayout>{children}</MainLayout>
+          </Providers>
         </div>
       </body>
     </html>
