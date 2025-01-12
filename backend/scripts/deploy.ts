@@ -25,6 +25,17 @@ async function main() {
   console.log("🚀 Signer balance:", ethers.formatEther(signerBalance))
 
   console.log("🚀 Reciver balance:", `${ethers.formatEther(await provider.getBalance(reciver))}`)
+
+  // Working with blocks
+  const blockInfo = await ethers.provider.getBlock(1, true)// true - all transaction get
+  console.log("🚀 ~ Information about first block:", blockInfo)
+  // get time from block
+  const timeBlock = (await ethers.provider.getBlock(1))?.timestamp // seconds
+  const timeBlockMiliSeconds = timeBlock && new Date(timeBlock * 1000)
+  console.log("🚀 ~ timeBlockMiliSeconds:", timeBlockMiliSeconds)
+  // get hash
+  const hashTx = blockInfo?.prefetchedTransactions[0].hash
+  console.log("🚀 ~ hash Transactions:", hashTx)
 }
 
 main()
