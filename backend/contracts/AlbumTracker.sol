@@ -5,9 +5,7 @@ import './Album.sol';
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract AlbumTracker is Ownable  {
-  event AlbumStateChanged(uint _albumIndex, uint _stateNum, address _albumAddress, string _albumTitle);  
-
-  constructor() Ownable(msg.sender) {}
+  event AlbumStateChanged(address indexed _albumAddress, uint _albumIndex, uint _stateNum, string _albumTitle);  
 
   enum AlbumState {
     Created, Paid, Delivered
@@ -21,7 +19,9 @@ contract AlbumTracker is Ownable  {
   }
 
   mapping(uint => AlbumProduct) public albums;
-  uint currentIndex;
+  uint256 public currentIndex;
+
+ constructor() Ownable(msg.sender) {}
 
   function createAlbum(uint _price, string memory _title) public onlyOwner {
     Album newAlbum = new Album(_price, _title, currentIndex, this);
@@ -31,7 +31,7 @@ contract AlbumTracker is Ownable  {
     albums[currentIndex].price = _price;
     albums[currentIndex].title = _title;
 
-    emit AlbumStateChanged(currentIndex, uint(albums[currentIndex].state), address(newAlbum), _title);
+    emit AlbumStateChanged(address(newAlbum),currentIndex, uint(albums[currentIndex].state), _title);
 
     currentIndex++;
   }
@@ -42,7 +42,7 @@ contract AlbumTracker is Ownable  {
     
     albums[_index].state = AlbumState.Paid;
 
-    emit AlbumStateChanged(_index, uint(albums[_index].state), address(albums[_index].album), albums[_index].title);
+    emit AlbumStateChanged(address(albums[_index].album),_index, uint(albums[_index].state), albums[_index].title);
  }
 
  function triggerDelivery(uint _index) public onlyOwner {
@@ -50,6 +50,6 @@ contract AlbumTracker is Ownable  {
     
     albums[_index].state = AlbumState.Delivered;
 
-    emit AlbumStateChanged(_index, uint(albums[_index].state), address(albums[_index].album), albums[_index].title);
+    emit AlbumStateChanged(address(albums[_index].album), _index, uint(albums[_index].state), albums[_index].title);
  }
 }
