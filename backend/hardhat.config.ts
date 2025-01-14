@@ -2,7 +2,6 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
-  // solidity: "0.8.28",
   solidity: {
     version: "0.8.28",
     settings: {
@@ -12,7 +11,10 @@ const config: HardhatUserConfig = {
       }
     }
   },
-
+  // https://github.com/cgewecke/hardhat-gas-reporter --> example usage
+  gasReporter: {
+    enabled: false
+  }
 };
 
 export default config;
