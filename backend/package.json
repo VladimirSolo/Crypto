@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx hardhat run scripts/deployAlbumTracker.ts --network localhost"
+    "start": "npx hardhat run scripts/deployAlbumStore.ts --network localhost",
+    "typechain": "npx typechain --target ethers-v6 --out-dir ../frontend/src/typechain 'artifacts/contracts/**/*[!dbg].json'"
   },
   "keywords": [],
   "author": "",
