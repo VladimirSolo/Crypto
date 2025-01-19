@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx hardhat run scripts/deployAlbumStore.ts --network localhost",
-    "typechain": "npx typechain --target ethers-v6 --out-dir ../frontend/src/typechain 'artifacts/contracts/**/*[!dbg].json'"
+    "typechain": "npx typechain --target ethers-v6 --out-dir ../frontend/src/typechain 'artifacts/contracts/**/*[!dbg].json'",
+    "testnet": "npx hardhat run scripts/deployAlbumStore.ts --network sepolia"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "hardhat": "^2.22.18"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.2.0"
+    "@openzeppelin/contracts": "^5.2.0",
+    "dotenv": "^16.4.7"
   }
 }
