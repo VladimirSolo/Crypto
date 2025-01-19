@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
-import "hardhat/console.sol";
-
-contract AlbumStore is ERC165 {
+contract AlbumStore {
     enum OrderStatus {
         Paid,
         Delivered
@@ -42,6 +38,8 @@ contract AlbumStore is ERC165 {
     );
     event OrderDelivered(bytes32 indexed albumUid, address indexed customer);
 
+    event LogFallbackData(bytes data);
+
     modifier onlyOwner() {
         require(msg.sender == owner, "not an owner!");
         _;
@@ -50,8 +48,6 @@ contract AlbumStore is ERC165 {
     constructor(address _owner) {
         owner = _owner;
     }
-
-    // constructor() Ownable(msg.sender) {}
 
     function addAlbum(
         bytes32 uid,
@@ -121,6 +117,6 @@ contract AlbumStore is ERC165 {
     }
 
     fallback() external {
-        console.logBytes(msg.data);
+        emit LogFallbackData(msg.data);
     }
 }
